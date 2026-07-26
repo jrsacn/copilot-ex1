@@ -1,38 +1,32 @@
 import { Router } from 'express';
 import { Activity, LeaderboardEntry, Team, User, Workout } from '../models/index.js';
 const router = Router();
-function getApiBaseUrl() {
-    const codespaceName = process.env.CODESPACE_NAME;
-    return codespaceName
-        ? `https://${codespaceName}-8000.app.github.dev`
-        : 'http://localhost:8000';
-}
-function sendCollection(res, resource, items) {
+function sendCollection(req, res, resource, items) {
     res.json({
         resource,
-        baseUrl: getApiBaseUrl(),
+        baseUrl: req.app.locals.apiBaseUrl || 'http://localhost:8000',
         count: items.length,
         results: items,
     });
 }
-router.get('/users/', async (_req, res) => {
+router.get('/users/', async (req, res) => {
     const users = await User.find({}).lean();
-    sendCollection(res, 'users', users);
+    sendCollection(req, res, 'users', users);
 });
-router.get('/teams/', async (_req, res) => {
+router.get('/teams/', async (req, res) => {
     const teams = await Team.find({}).lean();
-    sendCollection(res, 'teams', teams);
+    sendCollection(req, res, 'teams', teams);
 });
-router.get('/activities/', async (_req, res) => {
+router.get('/activities/', async (req, res) => {
     const activities = await Activity.find({}).lean();
-    sendCollection(res, 'activities', activities);
+    sendCollection(req, res, 'activities', activities);
 });
-router.get('/leaderboard/', async (_req, res) => {
+router.get('/leaderboard/', async (req, res) => {
     const leaderboard = await LeaderboardEntry.find({}).lean();
-    sendCollection(res, 'leaderboard', leaderboard);
+    sendCollection(req, res, 'leaderboard', leaderboard);
 });
-router.get('/workouts/', async (_req, res) => {
+router.get('/workouts/', async (req, res) => {
     const workouts = await Workout.find({}).lean();
-    sendCollection(res, 'workouts', workouts);
+    sendCollection(req, res, 'workouts', workouts);
 });
 export default router;
