@@ -17,6 +17,8 @@ alias gcomm='git commit -m'
 
 alias gdif='git diff -w --abbrev'
 alias gdiff='git diff -w --abbrev --stat'
+alias gdifs='git diff -w --abbrev --staged'
+alias gdiffs='git diff -w --abbrev --staged --stat'
 
 alias glog='git log --abbrev-commit --pretty=oneline'
 
