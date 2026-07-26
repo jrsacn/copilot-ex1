@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { Activity, LeaderboardEntry, Team, User, Workout } from '../models/index.js';
 
 const router = Router();
 
@@ -18,39 +19,29 @@ function sendCollection(res: any, resource: string, items: unknown[]) {
   });
 }
 
-router.get('/users/', (_req, res) => {
-  sendCollection(res, 'users', [
-    { id: 'user-1', name: 'Ava', role: 'Captain' },
-    { id: 'user-2', name: 'Noah', role: 'Runner' },
-  ]);
+router.get('/users/', async (_req, res) => {
+  const users = await User.find({}).lean();
+  sendCollection(res, 'users', users);
 });
 
-router.get('/teams/', (_req, res) => {
-  sendCollection(res, 'teams', [
-    { id: 'team-1', name: 'North Stars', members: 4 },
-    { id: 'team-2', name: 'River Runners', members: 3 },
-  ]);
+router.get('/teams/', async (_req, res) => {
+  const teams = await Team.find({}).lean();
+  sendCollection(res, 'teams', teams);
 });
 
-router.get('/activities/', (_req, res) => {
-  sendCollection(res, 'activities', [
-    { id: 'activity-1', type: 'Run', duration: '30m' },
-    { id: 'activity-2', type: 'Cycling', duration: '45m' },
-  ]);
+router.get('/activities/', async (_req, res) => {
+  const activities = await Activity.find({}).lean();
+  sendCollection(res, 'activities', activities);
 });
 
-router.get('/leaderboard/', (_req, res) => {
-  sendCollection(res, 'leaderboard', [
-    { id: 'leader-1', name: 'Ava', score: 1250 },
-    { id: 'leader-2', name: 'Noah', score: 1180 },
-  ]);
+router.get('/leaderboard/', async (_req, res) => {
+  const leaderboard = await LeaderboardEntry.find({}).lean();
+  sendCollection(res, 'leaderboard', leaderboard);
 });
 
-router.get('/workouts/', (_req, res) => {
-  sendCollection(res, 'workouts', [
-    { id: 'workout-1', title: 'HIIT Cardio', difficulty: 'Intermediate' },
-    { id: 'workout-2', title: 'Core Strength', difficulty: 'Beginner' },
-  ]);
+router.get('/workouts/', async (_req, res) => {
+  const workouts = await Workout.find({}).lean();
+  sendCollection(res, 'workouts', workouts);
 });
 
 export default router;
